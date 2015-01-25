@@ -3,11 +3,18 @@ var csv = require('csv'),
 
 var refine = require('../lib')
 
+refine.search = require('../lib/search') //This is really weird, I don't like this
+
+console.log(refine)
+
 fs.createReadStream('../data/colorado5.csv')
 	.pipe(csv.parse())
 
-	.pipe(refine.filter(9,"/^G/"))
+//	.pipe(refine.filter(9,"/^G/"))
+//	.pipe(refine.tail(3))
 //	.pipe(refine.swap(0,8)) //test swap
+	.pipe(refine.search(9))
+	.pipe(refine.head(2))
 
 //	.pipe(refine.lowercase(8))
 

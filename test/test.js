@@ -150,6 +150,22 @@ describe('refine', function() {
         })
     })
 
+    describe('translate', function() {
+        it('should translate text', function(done) {
+
+            streamify([
+                ["Hello, my name is Bob"]   
+            ])
+                .pipe(refine.translate(0,'en','es'))
+                .pipe(assert.all(function(data) {
+                    data[0].should.match(/Hola, me llamo Bob/)
+                }))
+                .pipe(assert.end(done))
+        })
+    })
+
+
+
     describe('filter', function() {
         it('filter(1,/^a/) should keep only rows whose value at column 1 begins with the letter a', function(done) {
 

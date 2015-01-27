@@ -6,12 +6,12 @@ var refine = require('../lib')
 fs.createReadStream('../data/colorado5.csv')
 	.pipe(csv.parse())
 	
-	//.pipe(refine.tail(2))
+	.pipe(refine.tail(3))
 
 //	.pipe(refine.filter(9,"/^G/"))
 //	.pipe(refine.tail(3))
 //	.pipe(refine.swap(0,8)) //test swap
-//	.pipe(refine.search(9))
+	.pipe(refine.search(9))
 
 //	.pipe(refine.lowercase(8))
 

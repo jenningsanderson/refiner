@@ -17,7 +17,13 @@ fs.createReadStream('../data/colorado5.csv')
 
 	.pipe(refine.print())
 
-	.pipe(refine.copy(1,2))
+//	.pipe(refine.copy(1,2))
+
+	.pipe(refine.remove([1,2,9]))
+
+	//.pipe(refine.print())
+
+	//.pipe(refine.remove(1))
 
 //	.pipe(refine.uppercase(8))
 

@@ -11,11 +11,17 @@ fs.createReadStream('../data/colorado5.csv')
 //	.pipe(refine.filter(9,"/^G/"))
 //	.pipe(refine.tail(3))
 //	.pipe(refine.swap(0,8)) //test swap
-	.pipe(refine.search(9))
+//	.pipe(refine.search(9))
 
 //	.pipe(refine.lowercase(8))
 
+	.pipe(refine.print())
+
+	.pipe(refine.copy(1,2))
+
 //	.pipe(refine.uppercase(8))
+
+	//.pipe(refine.replace('a','bb'))
 
 //	.pipe(refine.remove([10,11,12,13,14,15]))
 

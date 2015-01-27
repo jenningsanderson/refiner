@@ -170,7 +170,7 @@ describe('refine', function() {
         })
     })    
 
-     describe('sunrise', function() {
+    describe('sunrise', function() {
         it('sunrise(1) should replace a ctiy name at column 1 with the city\'s sunrise time', function(done) {
 
             streamify([
@@ -178,6 +178,27 @@ describe('refine', function() {
                 [0, 'boulder', 2, 3]                
             ])
                 .pipe(refine.sunrise(1, 2))
+                .pipe(assert.first(function(data) {
+                    data[1].should.not.be.equal('denver')
+                    data[1].should.be.above(1421000000)
+                }))
+                .pipe(assert.second(function(data) {
+                    data[1].should.not.be.equal('boulder')
+                    data[1].should.be.above(1421000000)
+                }))
+                .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('search', function() {
+        it('should take a columnId and replace the value at that id with the first link returned in a google search on the column contents', function(done) {
+
+            streamify([
+                [0, 'denver', 2, 3],
+                [0, 'boulder', 2, 3]                
+            ])
+                .pipe(refine.search(1))
                 .pipe(assert.first(function(data) {
                     data[1].should.not.be.equal('denver')
                     data[1].should.be.above(1421000000)

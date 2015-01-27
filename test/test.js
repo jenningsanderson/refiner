@@ -153,7 +153,7 @@ describe('refine', function() {
     })
 
     describe('replace', function() {
-        it('replace("a","b"") should replace all a\'s with bb\'s', function(done) {
+        it('replace("a","bb") should replace all a\'s with bb\'s', function(done) {
 
             streamify([
                 [0, 'bat', 2, 3],	

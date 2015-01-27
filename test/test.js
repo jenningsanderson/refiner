@@ -199,13 +199,12 @@ describe('refine', function() {
                 [0, 'boulder', 2, 3]                
             ])
                 .pipe(refine.search(1))
+                
                 .pipe(assert.first(function(data) {
-                    data[1].should.not.be.equal('denver')
-                    data[1].should.be.above(1421000000)
+                    data[1].should.match(/^http:/)
                 }))
                 .pipe(assert.second(function(data) {
-                    data[1].should.not.be.equal('boulder')
-                    data[1].should.be.above(1421000000)
+                     data[1].should.match(/^http:/)
                 }))
                 .pipe(assert.end(done))
 

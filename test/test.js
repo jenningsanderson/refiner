@@ -109,7 +109,24 @@ describe('refine', function() {
                 .pipe(refine.lowercase(2))
 
                 .pipe(assert.all(function(data) {
-                    data[2].should.match(/\a*|\s*/)
+                    data[2].should.match(/[^A-Z]/)
+                }))
+                .pipe(assert.end(done))
+         })
+    })
+
+    describe('uppercase', function(){
+         it("should make all the text in the desired columnId (uppercase(9) uppercase.", function(done){
+            
+            streamify([
+                [0, 1, "some lowerCASE letters", 3],
+                [0, 1, "all lowercase letters", 3]
+            ])
+
+                .pipe(refine.uppercase(2))
+
+                .pipe(assert.all(function(data) {
+                    data[2].should.match(/[^a-z]/)
                 }))
                 .pipe(assert.end(done))
          })

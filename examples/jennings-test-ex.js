@@ -15,11 +15,13 @@ fs.createReadStream('../data/colorado5.csv')
 
 //	.pipe(refine.lowercase(8))
 
-	.pipe(refine.print())
+//	.pipe(refine.print())
 
-	.pipe(refine.lowercase(9))
+//	.pipe(refine.lowercase(9))
 
 //	.pipe(refine.copy(1,2))
+
+	.pipe(refine.sort(11))
 
 //	.pipe(refine.remove([1,2,9]))
 

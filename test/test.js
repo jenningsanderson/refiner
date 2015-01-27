@@ -260,5 +260,45 @@ describe('refine', function() {
         })
     })
 
+    describe('zipcode', function() {
+        it('should take a columnId and replace the value at that id with the the zipcode for that town', function(done) {
+
+            streamify([
+                [0, 'Denver', 2, 3],
+                [0, 'Boulder', 2, 3]                
+            ])
+                .pipe(refine.zipcode(1))
+                
+                .pipe(assert.first(function(data) {
+                    data[1].should.match(/\d+/)
+                }))
+                .pipe(assert.second(function(data) {
+                     data[1].should.match(/\d+/)
+                }))
+                .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('sort', function() {
+        it('should sort the rows by the column specified, ie: sort(9)', function(done) {
+
+            streamify([
+                [3,2,2,2],
+                [2,1,3,2],
+                [1,2,3,4]                
+            ])
+                .pipe(refine.sort(0))  
+                .pipe(assert.first(function(data) {
+                    data.should.eql([1,2,3,4])
+                }))
+                .pipe(assert.second(function(data) {
+                    data.should.eql([2,1,3,2])
+                }))
+                .pipe(assert.end(done))
+
+        })
+    })
+
 
 })

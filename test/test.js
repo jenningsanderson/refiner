@@ -95,8 +95,24 @@ describe('refine', function() {
                 }))
                 .pipe(assert.length(2))
                 .pipe(assert.end(done))
-
         })
+    })
+
+    describe('lowercase', function(){
+         it("should make all the text in the desired columnId (lowercase(9) lowercase.", function(done){
+            
+            streamify([
+                [0, 1, "ALL CAPITAL LETTERS", 3],
+                [0, 1, "some CAPITAL leTTers", 3]
+            ])
+
+                .pipe(refine.lowercase(2))
+
+                .pipe(assert.all(function(data) {
+                    data[2].should.match(/\a*|\s*/)
+                }))
+                .pipe(assert.end(done))
+         })
     })
 
     describe('copy', function() {

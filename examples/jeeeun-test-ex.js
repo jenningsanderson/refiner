@@ -4,7 +4,7 @@ var csv = require('csv'),
 
 var refine = require('../lib')
 
-fs.createReadStream('../data/colorado.csv')
+fs.createReadStream('../data/colorado5.csv')
 	.pipe(csv.parse())
 //	.pipe(refine.skipfirst())
 
@@ -22,9 +22,11 @@ fs.createReadStream('../data/colorado.csv')
 //	.pipe(refine.replace('Air Force Academy CDP', 'Jennings'))
 //	.pipe(refine.replace('6680', 'Khalid'))
 
-//	.pipe(refine.copy(10))
+//	.pipe(refine.copy(1))
 	
 //	.pipe(refine.threshold(11,3000))
 
-	.pipe(refine.translate(9, 'en', 'ru'))
+//	.pipe(refine.translate(9, 'en', 'ru'))
+	
+	.pipe(refine.removeRow(12,900))
 	.pipe(refine.print())

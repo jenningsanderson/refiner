@@ -95,8 +95,41 @@ describe('refine', function() {
                 }))
                 .pipe(assert.length(2))
                 .pipe(assert.end(done))
-
         })
+    })
+
+    describe('lowercase', function(){
+         it("should make all the text in the desired columnId (lowercase(9) lowercase.", function(done){
+            
+            streamify([
+                [0, 1, "ALL CAPITAL LETTERS", 3],
+                [0, 1, "some CAPITAL leTTers", 3]
+            ])
+
+                .pipe(refine.lowercase(2))
+
+                .pipe(assert.all(function(data) {
+                    data[2].should.match(/[^A-Z]/)
+                }))
+                .pipe(assert.end(done))
+         })
+    })
+
+    describe('uppercase', function(){
+         it("should make all the text in the desired columnId (uppercase(9) uppercase.", function(done){
+            
+            streamify([
+                [0, 1, "some lowerCASE letters", 3],
+                [0, 1, "all lowercase letters", 3]
+            ])
+
+                .pipe(refine.uppercase(2))
+
+                .pipe(assert.all(function(data) {
+                    data[2].should.match(/[^a-z]/)
+                }))
+                .pipe(assert.end(done))
+         })
     })
 
     describe('copy', function() {
@@ -134,6 +167,22 @@ describe('refine', function() {
         })
     })
 
+    describe('translate', function() {
+        it('should translate text', function(done) {
+
+            streamify([
+                ["Hello, my name is Bob"]   
+            ])
+                .pipe(refine.translate(0,'en','es'))
+                .pipe(assert.all(function(data) {
+                    data[0].should.match(/Hola, me llamo Bob/)
+                }))
+                .pipe(assert.end(done))
+        })
+    })
+
+
+
     describe('filter', function() {
         it('filter(1,/^a/) should keep only rows whose value at column 1 begins with the letter a', function(done) {
 
@@ -153,7 +202,7 @@ describe('refine', function() {
     })
 
     describe('replace', function() {
-        it('replace("a","b"") should replace all a\'s with bb\'s', function(done) {
+        it('replace("a","bb") should replace all a\'s with bb\'s', function(done) {
 
             streamify([
                 [0, 'bat', 2, 3],	
@@ -170,7 +219,7 @@ describe('refine', function() {
         })
     })    
 
-     describe('sunrise', function() {
+    describe('sunrise', function() {
         it('sunrise(1) should replace a ctiy name at column 1 with the city\'s sunrise time', function(done) {
 
             streamify([
@@ -185,6 +234,66 @@ describe('refine', function() {
                 .pipe(assert.second(function(data) {
                     data[1].should.not.be.equal('boulder')
                     data[1].should.be.above(1421000000)
+                }))
+                .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('search', function() {
+        it('should take a columnId and replace the value at that id with the first link returned in a google search on the column contents', function(done) {
+
+            streamify([
+                [0, 'denver', 2, 3],
+                [0, 'boulder', 2, 3]                
+            ])
+                .pipe(refine.search(1))
+                
+                .pipe(assert.first(function(data) {
+                    data[1].should.match(/^http:/)
+                }))
+                .pipe(assert.second(function(data) {
+                     data[1].should.match(/^http:/)
+                }))
+                .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('zipcode', function() {
+        it('should take a columnId and replace the value at that id with the the zipcode for that town', function(done) {
+
+            streamify([
+                [0, 'Denver', 2, 3],
+                [0, 'Boulder', 2, 3]                
+            ])
+                .pipe(refine.zipcode(1))
+                
+                .pipe(assert.first(function(data) {
+                    data[1].should.match(/\d+/)
+                }))
+                .pipe(assert.second(function(data) {
+                     data[1].should.match(/\d+/)
+                }))
+                .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('sort', function() {
+        it('should sort the rows by the column specified, ie: sort(9)', function(done) {
+
+            streamify([
+                [3,2,2,2],
+                [2,1,3,2],
+                [1,2,3,4]                
+            ])
+                .pipe(refine.sort(0))  
+                .pipe(assert.first(function(data) {
+                    data.should.eql([1,2,3,4])
+                }))
+                .pipe(assert.second(function(data) {
+                    data.should.eql([2,1,3,2])
                 }))
                 .pipe(assert.end(done))
 

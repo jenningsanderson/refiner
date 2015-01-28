@@ -65,6 +65,24 @@ describe('refine', function() {
         })
     })
 
+    describe('removeRow', function() {
+        it('removeRow(2, 30) should pass the row with less than threshold', function(done) {
+
+            streamify([
+                [2, 3, 29, 3],
+                [2, 3, 95, 3],
+                [1, 2, 40, 2],
+                [1, 2, 31, 2]
+            ])
+                .pipe(refine.removeRow(2, 30))
+                .pipe(assert.all(function(data) {
+                    data[2].should.be.above(30)
+                }))
+                .pipe(assert.length(3))
+                .pipe(assert.end(done))
+        })
+    })
+
     describe('swap', function() {
         it('swap(1,2) should swap two columns', function(done) {
 

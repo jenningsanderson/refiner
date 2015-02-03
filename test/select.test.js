@@ -3,7 +3,8 @@ var streamify = require('stream-array'),
     should = require('should'),
     through2 = require('through2')
 
-var refine = require('../lib/v2')
+var refine = require('../lib/v2/')
+var select = refine.select
 
 var addOne = function(cell) {
     return cell + 1
@@ -21,7 +22,7 @@ describe('select', function() {
                 .pipe(refine.start({
                     'fields': ['foo', 'bar', 'tee']
                 }))
-                .pipe(refine.fields(['bar'], addOne))
+                .pipe(select.fields(['bar'], addOne))
                 .pipe(refine.end())
                 .pipe(assert.first(function(data) {
                     data.should.be.eql([1, 2, 1])
@@ -39,7 +40,7 @@ describe('select', function() {
                 .pipe(refine.start({
                     'fields': ['foo', 'bar', 'tee']
                 }))
-                .pipe(refine.fields(['bar', 'foo'], addOne))
+                .pipe(select.fields(['bar', 'foo'], addOne))
                 .pipe(refine.end())
                 .pipe(assert.first(function(data) {
                     data.should.be.eql([2, 2, 1])
@@ -57,7 +58,7 @@ describe('select', function() {
                 .pipe(refine.start({
                     'fields': ['foo', 'bar', 'tee']
                 }))
-                .pipe(refine.fields('bar', addOne))
+                .pipe(select.fields('bar', addOne))
                 .pipe(refine.end())
                 .pipe(assert.first(function(data) {
                     data.should.be.eql([1, 2, 1])
@@ -75,7 +76,7 @@ describe('select', function() {
                 .pipe(refine.start({
                     'fields': ['foo', 'bar', 'tee']
                 }))
-                .pipe(refine.fields(['boom', 'bar'], addOne))
+                .pipe(select.fields(['boom', 'bar'], addOne))
                 .pipe(refine.end())
                 .pipe(assert.first(function(data) {
                     data.should.be.eql([1, 2, 1])
@@ -95,7 +96,7 @@ describe('select', function() {
                 [2, 2, 2]
             ])
                 .pipe(refine.start())
-                .pipe(refine.cols(1, addOne))
+                .pipe(select.cols(1, addOne))
                 .pipe(refine.end())
                 .pipe(assert.first(function(data) {
                     data.should.be.eql([1, 2, 1])
@@ -111,7 +112,7 @@ describe('select', function() {
                 [2, 2, 2]
             ])
                 .pipe(refine.start())
-                .pipe(refine.cols([1, 2], addOne))
+                .pipe(select.cols([1, 2], addOne))
                 .pipe(refine.end())
                 .pipe(assert.first(function(data) {
                     data.should.be.eql([1, 2, 2])
@@ -132,7 +133,7 @@ describe('select', function() {
                 [2, 2, 2]
             ])
                 .pipe(refine.start())
-                .pipe(refine.all(addOne))
+                .pipe(select.all(addOne))
                 .pipe(refine.end())
                 .pipe(assert.first(function(data) {
                     data.should.be.eql([2, 2, 2])

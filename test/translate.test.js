@@ -25,7 +25,7 @@ describe('translate', function() {
 
     })
 
-	it('should translate everything translated', function(done){
+	it('should translate everything translated, fails because of api restrictions', function(done){
         streamify([
             ['Hello world', 'mom']
         ])

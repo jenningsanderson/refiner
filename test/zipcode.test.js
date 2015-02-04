@@ -6,7 +6,7 @@ var refine = require('../lib/v2')
 var transform = refine.transform
 var select = refine.select
 
-describe('search', function() {
+describe('zipcode', function() {
 
     it('should change the text in a cell to a list of zipcodes', function(done) {
 

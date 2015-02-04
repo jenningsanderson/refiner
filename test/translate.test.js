@@ -24,5 +24,19 @@ describe('translate', function() {
 
     })
 
+	it('should translate everything translated', function(done){
+        streamify([
+            ['Hello world', 'mom']
+        ])
+            .pipe(refine.start())
+            .pipe(select.all(transform.translate('en', 'fr')))
+            .pipe(refine.end())
+
+            .pipe(assert.first(function(row) {
+                row.should.be.eql(['Bonjour tout le monde', 'maman'])
+            }))
+            .pipe(assert.end(done))
+		
+	})
 
 })

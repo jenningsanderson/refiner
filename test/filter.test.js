@@ -6,38 +6,38 @@ var refine = require('../lib/v2')
 var transform = refine.transform
 var select = refine.select
 
-describe('translate', function() {
-    this.timeout(5000);
+describe('filter', function() {
 
-    it('should change the text in a cell to translated language', function(done) {
+    it('check that a certain column matches the filter', function(done) {
 
         streamify([
-            ['Hello world', 'b', 'c']
+            ['Denver', 2, 3]
         ])
             .pipe(refine.start())
-            .pipe(select.cols(0, transform.translate('en', 'fr')))
+            .pipe(select.cols(0, transform.filter('\\d+')))
             .pipe(refine.end())
-
+            
             .pipe(assert.first(function(row) {
-                row.should.be.eql(['Bonjour tout le monde', 'b', 'c'])
+                row.should.be.eql(['---', 2, 3])
             }))
             .pipe(assert.end(done))
 
     })
 
-	it('should translate everything translated', function(done){
+    it('should check that all values match a given filter', function(done) {
+
         streamify([
-            ['Hello world', 'mom']
+            [11,23,'Denver']
         ])
             .pipe(refine.start())
-            .pipe(select.all(transform.translate('en', 'fr')))
+            .pipe(select.all(transform.filter("\\d+")))
             .pipe(refine.end())
-
+            
             .pipe(assert.first(function(row) {
-                row.should.be.eql(['Bonjour tout le monde', 'maman'])
+                row.should.be.eql([11, 23, '---'])
             }))
             .pipe(assert.end(done))
-		
-	})
+
+    })
 
 })

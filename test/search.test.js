@@ -7,6 +7,7 @@ var transform = refine.transform
 var select = refine.select
 
 describe('search', function() {
+    this.timeout(5000);
 
     it('should change the text in a cell to a link from Google', function(done) {
 

@@ -7,6 +7,7 @@ var transform = refine.transform
 var select = refine.select
 
 describe('sunrise', function() {
+    this.timeout(5000);
 
     it('should lookup the sunrise time for a given city or town, given the name of the town', function(done) {
 
